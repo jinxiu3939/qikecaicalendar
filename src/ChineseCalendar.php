@@ -53,7 +53,7 @@ class ChineseCalendar
      * @return DateTime
      * @throws \Exception
      */
-    public static function lunarToGregorian(int $year, int $month, int $day, int $isLeap=0, string $timeZoneName = 'Asia/Shanghai'): DateTime
+    public static function lunarToGregorian(int $year, int $month, int $day, int $isLeap = 0, string $timeZoneName = 'Asia/Shanghai'): DateTime
     {
         if ($year < -1000 || $year > 3000) { // 适用于公元-1000至公元3000,超出此范围误差较大
             throw new \DomainException('年份限-1000年至3000年');
@@ -115,10 +115,10 @@ class ChineseCalendar
         $jd = $jd - self::CHINESE_TIME_OFFSET; // 还原经过中国(东八区)时差处理的jd
 
         // 由于农历对应的是中国时间，故此在将农历转为公历时建议转为中国时间
-        if(is_null($errMsg)){
-            return Julian::jdToDateTime($jd,$timeZoneName)->setTime(0,0,0,0);
+        if (is_null($errMsg)) {
+            return Julian::jdToDateTime($jd, $timeZoneName)->setTime(0, 0, 0, 0);
             //return Julian::jdToDateTime($jd,$timeZoneName);
-        }else{
+        } else {
             throw new \InvalidArgumentException($errMsg);
         }
     }
@@ -133,7 +133,7 @@ class ChineseCalendar
      *
      * @return int[] map[string]int  [Y:int年,n:int月,j:int日,leap:int是否闰月(0不是闰月,1是闰月)]
      */
-    public static function gregorianToLunar(int $year,int $month,int $day):array
+    public static function gregorianToLunar(int $year, int $month, int $day): array
     {
         if ($year < -1000 || $year > 3000) { // 适用于公元-1000至公元3000,超出此范围误差较大
             throw new \DomainException('年份限-1000年至3000年');
@@ -186,7 +186,7 @@ class ChineseCalendar
         // 农历的日
         $dd = floor($jdn) - floor($nm[$mi] + 0.5) + 1; // 日,此处加1是因为每月初一从1开始而非从0开始
 
-        return ['Y'=>(int)$yy,'n'=>(int)$mm,'j'=>(int)$dd,'leap'=>$isLeap];
+        return ['Y' => (int)$yy, 'n' => (int)$mm, 'j' => (int)$dd, 'leap' => $isLeap];
     }
 
     /**
@@ -198,7 +198,7 @@ class ChineseCalendar
      *
      * @return int 农历某个月天数
      */
-    public static function lunarDays(int $year, int $month, int $isLeap=0):int
+    public static function lunarDays(int $year, int $month, int $isLeap=0): int
     {
         if ($year < -1000 || $year > 3000) { // 适用于公元-1000至公元3000,超出此范围误差较大
             throw new \DomainException('年份限-1000年至3000年');
@@ -246,11 +246,11 @@ class ChineseCalendar
     /**
      * 获取农历某年的闰月,0为无闰月
      *
-     * @param int       $year       农历年
+     * @param int $year 农历年
      *
      * @return int 闰几月，返回值是几就闰几月，0为无闰月
      */
-    public static function leap(int $year):int
+    public static function leap(int $year): int
     {
         [, , $mc] = self::zQandSMandLunarMonthCode($year);
 
@@ -264,9 +264,9 @@ class ChineseCalendar
      *
      * @param int $year 指定的年
      *
-     * @return array   array[3]array [float 以前一年冬至为起点之连续15个中气, float 以含冬至中气为阴历11月(冬月)开始的连续16个朔望月的新月点, float 月名称代码]
+     * @return array array[3]array [float 以前一年冬至为起点之连续15个中气, float 以含冬至中气为阴历11月(冬月)开始的连续16个朔望月的新月点, float 月名称代码]
      */
-    private static function zQandSMandLunarMonthCode(int $year):array
+    private static function zQandSMandLunarMonthCode(int $year): array
     {
         $mc = [];
 
@@ -315,7 +315,7 @@ class ChineseCalendar
      * @param float $dzjd 上一年的冬至jd
      * @return array
      */
-    private static function sMsinceWinterSolstice(int $year, float $dzjd):array
+    private static function sMsinceWinterSolstice(int $year, float $dzjd): array
     {
         $tjd = [];
 
@@ -354,7 +354,7 @@ class ChineseCalendar
      * @param array $mc
      * @return int 0无闰月，1表示上一年的11月，2表示上一年的12月，3表示本年正月，4表示本年二月，5表示本年三月...依此类推
      */
-    private static function mcLeap(array $mc):int
+    private static function mcLeap(array $mc): int
     {
         $leap = 0; // 若闰月旗标为0代表无闰月
         for ($j = 1; $j <= 14; $j++) { // 确认本年的上一年11月开始各月是否闰月
@@ -372,19 +372,19 @@ class ChineseCalendar
      *
      * @param int $year
      *
-     * @return array array[16]float  [儒略日...]
+     * @return array array[16]float [儒略日...]
      */
-    private static function pureJieSinceSpring(int $year):array
+    private static function pureJieSinceSpring(int $year): array
     {
-        if(isset(self::$jsses[$year])){
+        if (isset(self::$jsses[$year])) {
             return self::$jsses[$year];
         }
 
         $jss = [];
 
         $lastYearAsts = SolarTerm::lastYearSolarTerms($year);
-        for ($i=19;$i<=23;$i++){
-            if($i%2 == 0)continue;
+        for ($i = 19; $i <= 23; $i++) {
+            if ($i%2 == 0) continue;
             $jss[] = $lastYearAsts[$i] + self::CHINESE_TIME_OFFSET; // 农历计算需要，加上中国(东八区)时差
         }
 
@@ -394,8 +394,8 @@ class ChineseCalendar
 
         $asts = SolarTerm::adjustedSolarTerms($year, 0, 25); // 求出指定年节气之JD值,从春分开始,到大寒,多取两个确保覆盖一个公历年,也方便计算起运数
 
-        foreach ($asts as $k => $v){
-            if($k % 2 == 0){
+        foreach ($asts as $k => $v) {
+            if ($k % 2 == 0) {
                 continue;
             }
             $jss[] = $asts[$k] + self::CHINESE_TIME_OFFSET; // 农历计算需要，加上中国(东八区)时差
@@ -413,9 +413,9 @@ class ChineseCalendar
      *
      * @return array array[15]float  [儒略日...]
      */
-    private static function qiSinceWinterSolstice(int $year):array
+    private static function qiSinceWinterSolstice(int $year): array
     {
-        if(isset(self::$zqs[$year])){
+        if (isset(self::$zqs[$year])) {
             return self::$zqs[$year];
         }
 
@@ -423,8 +423,8 @@ class ChineseCalendar
 
         $lastYearAsts = SolarTerm::lastYearSolarTerms($year);
 
-        for ($i=18;$i<=22;$i++){
-            if($i%2 != 0)continue;
+        for ($i = 18; $i <= 22; $i++) {
+            if ($i%2 != 0) continue;
             $zq[] = $lastYearAsts[$i] + self::CHINESE_TIME_OFFSET; // 农历计算需要，加上中国(东八区)时差
         }
         // $zq[0] = $lastYearAsts[18] + self::CHINESE_TIME_OFFSET; // 冬至(上一年)
@@ -434,7 +434,7 @@ class ChineseCalendar
         $asts = SolarTerm::adjustedSolarTerms($year, 0, 25); // 求出指定年节气之JD值
 
         foreach ($asts as $k => $v){
-            if($k%2 != 0){
+            if ($k % 2 != 0) {
                 continue;
             }
             $zq[] = $asts[$k] + self::CHINESE_TIME_OFFSET; // 农历计算需要，加上中国(东八区)时差
@@ -461,7 +461,7 @@ class ChineseCalendar
      *
      * @return array
      */
-    public static function sexagenaryCycle(int $year, int $month = 1, int $day = 1, int $hours = 12, int $minutes = 0, int $seconds = 1, bool $nightZiHour = false):array
+    public static function sexagenaryCycle(int $year, int $month = 1, int $day = 1, int $hours = 12, int $minutes = 0, int $seconds = 1, bool $nightZiHour = false): array
     {
         $jd = Julian::julianDay($year,$month,$day,$hours,$minutes,max(1, $seconds));
 
@@ -501,7 +501,7 @@ class ChineseCalendar
         $dgz = (floor($dayjd + 49) % 60 + 60) % 60;
         $gz['d']['g'] = $dgz % 10; // 日干
         $gz['d']['z'] = $dgz % 12; // 日支
-        if($nightZiHour && ($hours >= 23)){ // 区分早晚子时,日柱前移一柱
+        if ($nightZiHour && ($hours >= 23)) { // 区分早晚子时,日柱前移一柱
             $gz['d']['g'] = ($gz['d']['g'] + 10 - 1) % 10;
             $gz['d']['z'] = ($gz['d']['z'] + 12 - 1) % 12;
         }
@@ -518,13 +518,13 @@ class ChineseCalendar
      * 星座索引
      *
      * @param int $month 月
-     * @param int $day   日
+     * @param int $day 日
      *
      * @return int 星座索引值
      */
-    public static function signIndex(int $month, int $day):int
+    public static function signIndex(int $month, int $day): int
     {
-        $dds = [20,19,21,20,21,22,23,23,23,24,22,22]; //星座的起始日期
+        $dds = [20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 22, 22]; //星座的起始日期
 
         $kn = $month - 1; //下标从0开始
 
@@ -534,7 +534,4 @@ class ChineseCalendar
 
         return (int)$kn;
     }
-
-
-
 }

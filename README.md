@@ -1,5 +1,7 @@
 # 日历
 
+> 特此声明：由于[原项目](https://gitee.com/phpu/php-calendar)在php8下面有些警告，联系原作者长时间未回复，我克隆了此版本再此基础上修改兼容php8.2
+
 calendar、日历、中国农历、阴历、节气、干支、生肖、星座
 
 通过天文计算和民间推算方法，准确计算出公历-1000年至3000年的农历、干支、节气等，同时支持多配置、多语言、多时区。
@@ -12,8 +14,6 @@ calendar、日历、中国农历、阴历、节气、干支、生肖、星座
 
 > 天文计算方法参考Jean Meeus的《Astronomical Algorithms》、[NASA](https://eclipse.gsfc.nasa.gov/SEhelp/deltatpoly2004.html "NASA")网站、[天文与历法](http://www.bieyu.com/ "天文与历法")网站等相关的天文历法计算方法。
 
-
-
 - [Installation 安装](#installation-安装)
 - [示例](#示例)
   - [日历](#日历)
@@ -23,15 +23,22 @@ calendar、日历、中国农历、阴历、节气、干支、生肖、星座
   - [农历与公历互换](#农历与公历互换)
   - [公历转换干支生肖](#公历转换干支生肖)
   - [星座](#星座)
+
+### 原作者联系方式
+
 - [帮助](https://github.com/liujiawm/php-calendar)
 - 联系
   - QQ:194088
   - Email:liujiawm@msn.com
 
+#### 新版本联系方式
+
+- Email: xiujixin@163.com
+
 ## Installation 安装 ##
 
 ```
-composer require phpu/calendar
+composer require qikecai/calendar
 ```
 
 
@@ -93,7 +100,7 @@ composer require phpu/calendar
 上例代码:
 ```
 // 新的日历对象
-$Calendar = new phpu\calendar\Calendar();
+$Calendar = new Qikecai\Ccalendar\Calendar();
 
 // 创建一个日历，createCalendar方法4个参数分别是:int年,int月,int日=0,int时=-1
 // createCalendar方法在指定的年份不在-1000至3000之内时throw DomainException异常
@@ -151,7 +158,7 @@ foreach ($calendar['days'] as [$k,$day]){
         // 0 GRID_DAY 一天
         // 1 GRID_WEEK 一周
         // 2 GRID_MONTH 一个月
-        'grid' => \phpu\calendar\Calendar::GRID_MONTH,
+        'grid' => \Qikecai\Ccalendar\Calendar::GRID_MONTH,
 
         // 读取节气
         'solar_terms' => true,
@@ -224,7 +231,7 @@ $calendar = $Calendar->setLang('zh-tw')->setTimeZone('Asia/Shanghai')->createCal
 
 ```
 // Julian::julianDay参数(int年,int月=1,int日=1,int时=12,int分=0,int秒=0,int毫秒=0)
-$jd = phpu\calendar\Julian::julianDay(2011,8,9,5,24,35);
+$jd = Qikecai\Ccalendar\Julian::julianDay(2011,8,9,5,24,35);
 var_dump($jd);
 ```
 
@@ -235,14 +242,14 @@ $jd = 2455782.7254051;
 
 // Julian::julianDayToDate参数(float儒略日)
 // 返回一个array,是字符串索引的整数值['Y' int年, 'n' int月, 'j' int日, 'G' int时, 'i' int分, 's' int秒,'u' int毫秒]
-$date = phpu\calendar\Julian::julianDayToDateArray($jd);
+$date = Qikecai\Ccalendar\Julian::julianDayToDateArray($jd);
 printf('%d-%d-%d %d:%d:%d',$date['Y'],$date['n'],$date['j'],$date['G'],$date['i'],$date['s']);
 
 print "\n";
 
 // 或者使用jdToDateTime方法直接转换为DateTime
 // 该方法第二个参数为时区名称，默认为: 'Asia/Shanghai'
-$dateTime = phpu\calendar\Julian::jdToDateTime($jd, 'Asia/Shanghai');
+$dateTime = Qikecai\Ccalendar\Julian::jdToDateTime($jd, 'Asia/Shanghai');
 print $dateTime->format(\DateTimeInterface::RFC3339)
 ```
 
@@ -253,13 +260,13 @@ print $dateTime->format(\DateTimeInterface::RFC3339)
 ```
 // 日期直接转换成简化儒略日
 // 如果日期在1858年11月17日凌晨之前，则返回0
-$mjd = phpu\calendar\Julian::modifiedJulianDay(2011,8,9,5,24,35);
+$mjd = Qikecai\Ccalendar\Julian::modifiedJulianDay(2011,8,9,5,24,35);
 print $mjd;
 
 print "\n";
 
 // 简化儒略日转儒略日
-$jd = phpu\calendar\Julian::mjdTojulianDay($mjd);
+$jd = Qikecai\Ccalendar\Julian::mjdTojulianDay($mjd);
 print $jd;
 
 ```
@@ -308,7 +315,7 @@ $st_names = ['春分', '清明', '谷雨', '立夏', '小满', '芒种', '夏至
                           '秋分', '寒露', '霜降', '立冬', '小雪', '大雪', '冬至', '小寒', '大寒', '立春', '雨水', '惊蛰'];
 
 // 该方法第二个参数为时区名称，默认为: 'Asia/Shanghai'
-$sts = phpu\calendar\SolarTerm::solarTerms(2021);
+$sts = Qikecai\Ccalendar\SolarTerm::solarTerms(2021);
 
 foreach ($sts as $stv){
     printf("%s: %s \n", $st_names[$stv['i']], $stv['d']->format(\DateTimeInterface::RFC3339));
@@ -337,7 +344,7 @@ printf("公历 %'.04d-%'.02d-%'.02d 是农历: %'.04d年 %s%d月 %d日 \n", $yea
 print "\n";
 
 // 默认时区: 'Asia/Shanghai'
-$gdate = \phpu\calendar\ChineseCalendar::lunarToGregorian($lunarDateArray['Y'],$lunarDateArray['n'],$lunarDateArray['j'],$lunarDateArray['leap']);
+$gdate = \Qikecai\Ccalendar\ChineseCalendar::lunarToGregorian($lunarDateArray['Y'],$lunarDateArray['n'],$lunarDateArray['j'],$lunarDateArray['leap']);
 print '农历'.$lunarDateArray['Y'].'年'.$leapstr.$lunarDateArray['n'].'月'.$lunarDateArray['j'].'是公历' . ': ' . $gdate->format('Y-m-d') ."\n";
 print "\n";
 
@@ -421,7 +428,11 @@ $year = 2020;
 $month = 5;
 $day = 26;
 $hours = 19;
-$scs = \phpu\calendar\ChineseCalendar::sexagenaryCycle($year, $month, $day, $hours);
+$scs = \Qikecai\Ccalendar\ChineseCalendar::sexagenaryCycle($year, $month, $day, $hours);
+$Calendar = new Calendar();
+$heavenly_stems = $Calendar->getLang('heavenly_stems');
+$earthly_branches = $Calendar->getLang('earthly_branches');
+$symbolic_animals = $Calendar->getLang('symbolic_animals');
 printf("%d年%d月%d日%d时的干支是: %s%s(%s)年 %s%s月 %s%s日 %s%s时 \n",$year,$month,$day,$hours,
     $heavenly_stems[$scs['y']['g']],$earthly_branches[$scs['y']['z']],$symbolic_animals[$scs['y']['z']],
     $heavenly_stems[$scs['m']['g']],$earthly_branches[$scs['m']['z']],
@@ -439,7 +450,7 @@ printf("%d年%d月%d日%d时的干支是: %s%s(%s)年 %s%s月 %s%s日 %s%s时 \n
 $month = 5;
 $day = 26;
 $star_sign = ['水瓶', '双鱼', '白羊', '金牛', '双子', '巨蟹', '狮子', '处女', '天秤', '天蝎', '射手', '摩羯'];
-$signIndex = \phpu\calendar\ChineseCalendar::signIndex($month, $day);
+$signIndex = \Qikecai\Ccalendar\ChineseCalendar::signIndex($month, $day);
 printf("%d月%d日出生 属%s座", $month, $day, $star_sign[$signIndex]);
 ```
 

@@ -1,5 +1,5 @@
 {
-	"name" : "phpu/calendar",
+	"name" : "qikecai/calendar",
 	"description" : "中国日历，通过天文计算和民间推算方法，准确计算出公历-1000年至3000年的农历、干支、节气等，同时支持多配置、多语言、多时区。",
 	"keywords" : [
 		"calendar",
@@ -26,18 +26,18 @@
 	],
 	"authors": [
 	{
-		"name": "liujiawm",
-		"email": "liujiawm@163.com",
-		"homepage": "https://liujiawm.github.io/"
+		"name": "hanscai",
+		"email": "xiujixin@163.com",
+		"homepage": "http://xindejob.qikecai.com/"
 	}
 	],
 	"autoload" : {
 		"psr-4" : {
-			"phpu\\calendar\\" : "src"
+			"Qikecai\\Ccalendar\\" : "src/"
 		}
 	},
 	"license" : "Apache-2.0",
 	"require" : {
-		"php" : ">=7.1"
+		"php" : ">=8.0"
 	}
 }

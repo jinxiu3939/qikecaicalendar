@@ -5,9 +5,9 @@
  * 不同场合引用该类时，根据精确度需要自行转换，
  */
 
-declare(strict_types=1);
+// declare(strict_types=1);
 
-namespace phpu\calendar;
+namespace Qikecai\Ccalendar;
 
 use \DateTime;
 use \Exception;
@@ -17,7 +17,7 @@ use \Exception;
  *
  * class Julian
  *
- * @package phpu\calendar
+ * @package Qikecai\Ccalendar
  */
 class Julian
 {

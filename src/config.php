@@ -10,7 +10,7 @@ return [
         // 0 GRID_DAY 一天
         // 1 GRID_WEEK 一周
         // 2 GRID_MONTH 一个月
-        'grid' => \phpu\calendar\Calendar::GRID_MONTH,
+        'grid' => \Qikecai\Ccalendar\Calendar::GRID_MONTH,
 
         // 读取节气
         'solar_terms' => true,

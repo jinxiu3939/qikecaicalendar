@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types=1);
+// declare(strict_types=1);
 
-namespace phpu\calendar;
+namespace Qikecai\Ccalendar;
 
 use InvalidArgumentException;
 
@@ -11,7 +11,7 @@ use InvalidArgumentException;
  *
  * Class Astronomy
  *
- * @package phpu\calendar
+ * @package Qikecai\Ccalendar
  */
 class Astronomy
 {

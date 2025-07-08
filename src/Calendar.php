@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types=1);
+// declare(strict_types=1);
 
-namespace phpu\calendar;
+namespace Qikecai\Ccalendar;
 
 use \DateTime;
 use \Exception;
@@ -35,7 +35,7 @@ use \Exception;
  *
  * class Calendar
  *
- * @package phpu\calendar
+ * @package Qikecai\Ccalendar
  */
 class Calendar
 {
@@ -175,6 +175,16 @@ class Calendar
         }
 
         return $this;
+    }
+
+    /**
+     * 获取语言
+     *
+     * @param string $key 健
+     * @return array
+     */
+    public function getLang(string $key){
+        return $this->lang[$key] ?? [];
     }
 
     /**
@@ -609,7 +619,7 @@ class Calendar
             case 30 : $daystr = ($this->lang['lunar_number'])[3] . ($this->lang['lunar_number'])[10];     // 三十
                 break;
             default:
-                $k = $day / 10;
+                $k = intdiv($day, 10);
                 $m = $day % 10;
                 $daystr = ($this->lang['lunar_whole_tens'])[$k] . ($this->lang['lunar_number'])[$m];
         }

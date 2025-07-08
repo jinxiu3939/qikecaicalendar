@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types=1);
+// declare(strict_types=1);
 
-namespace phpu\calendar;
+namespace Qikecai\Ccalendar;
 
 
 use \DateTime;
@@ -14,7 +14,7 @@ use \DateTime;
  *
  * Class ChineseCalendar
  *
- * @package phpu\calendar
+ * @package Qikecai\Ccalendar
  */
 class ChineseCalendar
 {
